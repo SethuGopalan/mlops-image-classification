@@ -19,6 +19,8 @@ def main():
     print("Epochs:", config["training"]["epochs"])
     print("Batch size:", config["training"]["batch_size"])
     
+    mlflow.log_metric("sample_accuracy", 0.0)
+    
     mlflow.end_run()
 
 if __name__ == "__main__":
