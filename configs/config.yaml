@@ -1,9 +1,14 @@
 project_name: mlops-image-classification
 
-data_path: data/
+data:
+  train_path: data/raw/training_set/training_set
+  test_path: data/raw/test_set/test_set
+
 model_path: models/
 
 training:
   epochs: 10
   batch_size: 32
   image_size: 150
+
+
