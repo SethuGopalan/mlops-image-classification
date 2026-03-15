@@ -10,6 +10,8 @@ def main():
     
     config = load_config()
     mlflow.start_run()
+    mlflow.set_tag("project_name", config["project_name"])
+
     
     mlflow.log_param("epochs", config["training"]["epochs"])
     mlflow.log_param("batch_size", config["training"]["batch_size"])
