@@ -1,4 +1,4 @@
-# mlops-image-classification
+
 
 # MLOps Image Classification
 
