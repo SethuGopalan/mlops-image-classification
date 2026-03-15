@@ -17,6 +17,16 @@ src/ – training and pipeline code
 
 Run the training pipeline:
 
+python run_training.py
+
+
+## Technologies Used
+
+TensorFlow  
+Python  
+YAML configuration  
+GitHub version control
+
 
 
 
