@@ -18,6 +18,8 @@ def main():
     print("Project:", config["project_name"])
     print("Epochs:", config["training"]["epochs"])
     print("Batch size:", config["training"]["batch_size"])
+    
+    mlflow.end_run()
 
 if __name__ == "__main__":
     main()
