@@ -4,6 +4,9 @@ import yaml
 # Import numpy for working with prediction values
 import numpy as np
 
+# Import pandas for saving prediction results
+import pandas as pd
+
 # Import TensorFlow for loading the saved model and image utilities
 import tensorflow as tf
 
@@ -51,14 +54,29 @@ def main():
     # Run prediction
     prediction = model.predict(image_array)
 
-    # Print raw prediction value
-    print("Raw prediction:", prediction[0][0])
+    # Get raw prediction value
+    raw_prediction = float(prediction[0][0])
 
     # Interpret binary classification result
-    if prediction[0][0] > 0.5:
-        print("Predicted class: dog")
+    if raw_prediction > 0.5:
+        predicted_class = "dog"
     else:
-        print("Predicted class: cat")
+        predicted_class = "cat"
+
+    # Create a DataFrame to store prediction results
+    prediction_df = pd.DataFrame({
+        "image_path": [image_path],
+        "raw_prediction": [raw_prediction],
+        "predicted_class": [predicted_class]
+    })
+
+    # Save prediction results to the reports folder
+    prediction_df.to_csv("reports/prediction_result.csv", index=False)
+
+    # Print prediction result
+    print("Raw prediction:", raw_prediction)
+    print("Predicted class:", predicted_class)
+    print("Prediction result saved to reports/prediction_result.csv")
 
 
 # Run the main function when this file is executed directly
