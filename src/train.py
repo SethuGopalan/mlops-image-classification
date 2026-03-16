@@ -1,6 +1,9 @@
 # Import yaml so we can read the configuration file
 import yaml
 
+# Import pandas for saving training history as a CSV file
+import pandas as pd
+
 # Import MLflow for experiment tracking
 import mlflow
 
@@ -124,6 +127,12 @@ def main():
         validation_data=test_data
     )
 
+    # Convert the training history into a pandas DataFrame
+    history_df = pd.DataFrame(history.history)
+
+    # Save the training history to the reports folder
+    history_df.to_csv("reports/training_log.csv", index=False)
+
     # Get final training and validation metrics from the training history
     final_train_accuracy = history.history["accuracy"][-1]
     final_train_loss = history.history["loss"][-1]
@@ -145,6 +154,7 @@ def main():
     print("Final training loss:", final_train_loss)
     print("Final validation accuracy:", final_val_accuracy)
     print("Final validation loss:", final_val_loss)
+    print("Training history saved to reports/training_log.csv")
     print("Model saved to models/cats_dogs_model_v1.keras")
 
     # End the MLflow run cleanly
