@@ -90,6 +90,9 @@ def main():
     # Read image size from config
     image_size = config["training"]["image_size"]
 
+    # Read training epochs from config
+    epochs = config["training"]["epochs"]
+
     # Start an MLflow run to track this training pipeline execution
     mlflow.start_run()
 
@@ -97,7 +100,7 @@ def main():
     mlflow.set_tag("project_name", config["project_name"])
 
     # Log training parameters into MLflow
-    mlflow.log_param("epochs", config["training"]["epochs"])
+    mlflow.log_param("epochs", epochs)
     mlflow.log_param("batch_size", config["training"]["batch_size"])
     mlflow.log_param("image_size", image_size)
 
@@ -107,11 +110,22 @@ def main():
     # Build the model
     model = build_model()
 
-    # Print confirmation that datasets and model are ready
-    print("Training dataset is ready for the training pipeline.")
-    print("Test dataset is ready for the training pipeline.")
-    print("Class names:", train_data.class_names)
-    print("Model architecture created successfully.")
+    # Compile the model for binary image classification
+    model.compile(
+        optimizer="adam",
+        loss="binary_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    # Train the model
+    history = model.fit(
+        train_data,
+        epochs=epochs,
+        validation_data=test_data
+    )
+
+    # Print confirmation that training finished
+    print("Training completed successfully.")
 
     # Log a placeholder metric for now
     mlflow.log_metric("sample_accuracy", 0.0)
