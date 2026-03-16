@@ -136,12 +136,16 @@ def main():
     mlflow.log_metric("val_accuracy", final_val_accuracy)
     mlflow.log_metric("val_loss", final_val_loss)
 
+    # Save the trained model to the models folder
+    model.save("models/cats_dogs_model_v1.keras")
+
     # Print confirmation that training finished
     print("Training completed successfully.")
     print("Final training accuracy:", final_train_accuracy)
     print("Final training loss:", final_train_loss)
     print("Final validation accuracy:", final_val_accuracy)
     print("Final validation loss:", final_val_loss)
+    print("Model saved to models/cats_dogs_model_v1.keras")
 
     # End the MLflow run cleanly
     mlflow.end_run()
