@@ -4,6 +4,9 @@ data:
   train_path: data/raw/training_set/training_set
   test_path: data/raw/test_set/test_set
 
+prediction:
+  image_path: data/raw/test_set/test_set/cats/cat.4001.jpg
+
 model_path: models/
 
 training:
