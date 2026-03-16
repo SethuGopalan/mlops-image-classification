@@ -4,6 +4,9 @@ import yaml
 # Import MLflow for experiment tracking
 import mlflow
 
+# Import TensorFlow for building the neural network model
+import tensorflow as tf
+
 # Import the dataset loading function from preprocess.py
 from src.preprocess import load_datasets
 
@@ -19,6 +22,57 @@ def load_config():
 
     # Return the configuration dictionary
     return config
+
+
+# This function builds the image classification model
+def build_model():
+
+    # Create data augmentation pipeline
+    data_augmentation = tf.keras.Sequential([
+        tf.keras.layers.RandomFlip("horizontal"),
+        tf.keras.layers.RandomRotation(0.1),
+        tf.keras.layers.RandomZoom(0.1),
+    ])
+
+    # Create the CNN model
+    model = tf.keras.Sequential([
+
+        # Define the input image shape
+        tf.keras.Input(shape=(256, 256, 3)),
+
+        # Normalize pixel values from 0-255 to 0-1
+        tf.keras.layers.Rescaling(1.0 / 255),
+
+        # Apply data augmentation during training
+        data_augmentation,
+
+        # First convolution block
+        tf.keras.layers.Conv2D(32, (3, 3), activation="relu"),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+
+        # Second convolution block
+        tf.keras.layers.Conv2D(64, (3, 3), activation="relu"),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+
+        # Third convolution block
+        tf.keras.layers.Conv2D(128, (3, 3), activation="relu"),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+
+        # Flatten feature maps into a vector
+        tf.keras.layers.Flatten(),
+
+        # Dense layer for learning high-level patterns
+        tf.keras.layers.Dense(128, activation="relu"),
+
+        # Dropout helps reduce overfitting
+        tf.keras.layers.Dropout(0.5),
+
+        # Output layer for binary classification
+        tf.keras.layers.Dense(1, activation="sigmoid")
+    ])
+
+    # Return the completed model
+    return model
 
 
 # Main training pipeline function
@@ -50,10 +104,14 @@ def main():
     # Load training and test datasets using the preprocessing pipeline
     train_data, test_data = load_datasets(train_path, test_path, image_size)
 
-    # Print confirmation that datasets are ready
+    # Build the model
+    model = build_model()
+
+    # Print confirmation that datasets and model are ready
     print("Training dataset is ready for the training pipeline.")
     print("Test dataset is ready for the training pipeline.")
     print("Class names:", train_data.class_names)
+    print("Model architecture created successfully.")
 
     # Log a placeholder metric for now
     mlflow.log_metric("sample_accuracy", 0.0)
