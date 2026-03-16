@@ -1,6 +1,9 @@
 # Import yaml so we can read the configuration file
 import yaml
 
+# Import pandas for saving evaluation results
+import pandas as pd
+
 # Import TensorFlow for loading and evaluating the saved model
 import tensorflow as tf
 
@@ -45,9 +48,19 @@ def main():
     # Evaluate the model on the test dataset
     test_loss, test_accuracy = model.evaluate(test_data)
 
+    # Create a DataFrame to store evaluation results
+    results_df = pd.DataFrame({
+        "test_accuracy": [test_accuracy],
+        "test_loss": [test_loss]
+    })
+
+    # Save evaluation results to the reports folder
+    results_df.to_csv("reports/evaluation_results.csv", index=False)
+
     # Print evaluation results
     print("Test accuracy:", test_accuracy)
     print("Test loss:", test_loss)
+    print("Evaluation results saved to reports/evaluation_results.csv")
 
 
 # Run the main function when this file is executed directly
