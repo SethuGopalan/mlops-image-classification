@@ -124,11 +124,24 @@ def main():
         validation_data=test_data
     )
 
+    # Get final training and validation metrics from the training history
+    final_train_accuracy = history.history["accuracy"][-1]
+    final_train_loss = history.history["loss"][-1]
+    final_val_accuracy = history.history["val_accuracy"][-1]
+    final_val_loss = history.history["val_loss"][-1]
+
+    # Log final metrics to MLflow
+    mlflow.log_metric("train_accuracy", final_train_accuracy)
+    mlflow.log_metric("train_loss", final_train_loss)
+    mlflow.log_metric("val_accuracy", final_val_accuracy)
+    mlflow.log_metric("val_loss", final_val_loss)
+
     # Print confirmation that training finished
     print("Training completed successfully.")
-
-    # Log a placeholder metric for now
-    mlflow.log_metric("sample_accuracy", 0.0)
+    print("Final training accuracy:", final_train_accuracy)
+    print("Final training loss:", final_train_loss)
+    print("Final validation accuracy:", final_val_accuracy)
+    print("Final validation loss:", final_val_loss)
 
     # End the MLflow run cleanly
     mlflow.end_run()
