@@ -7,11 +7,10 @@ data:
 prediction:
   image_path: data/raw/test_set/test_set/cats/cat.4001.jpg
 
-model_path: models/
+model:
+  save_path: models/cats_dogs_model_v1.keras
 
 training:
   epochs: 10
   batch_size: 32
   image_size: 150
-
-
