@@ -33,8 +33,8 @@ def main():
     # Read image size from config
     image_size = config["training"]["image_size"]
 
-    # Set the path of the image to predict
-    image_path = "data/raw/test_set/test_set/cats/cat.4001.jpg"
+    # Read prediction image path from config
+    image_path = config["prediction"]["image_path"]
 
     # Load the trained model from the models folder
     model = tf.keras.models.load_model("models/cats_dogs_model_v1.keras")
